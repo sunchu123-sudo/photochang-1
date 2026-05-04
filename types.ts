@@ -1,21 +1,20 @@
-
-export type ImageFormat = 'image/png' | 'image/jpeg' | 'image/webp' | 'image/avif';
-
-export interface FileItem {
+export interface PhotoItem {
   id: string;
   file: File;
+  name: string;
   previewUrl: string;
-  targetFormat: ImageFormat;
-  status: 'idle' | 'processing' | 'completed' | 'error';
-  progress: number;
-  resultUrl?: string;
-  originalSize: number;
-  aiSuggestedName?: string;
+  sourcePath: string;
+  sourceRoot: string;
+  takenAt: Date;
+  yearMonth: string;
+  locationLabel: string;
+  latitude?: number;
+  longitude?: number;
 }
 
-export const SUPPORTED_FORMATS: { label: string; value: ImageFormat }[] = [
-  { label: 'PNG', value: 'image/png' },
-  { label: 'JPEG', value: 'image/jpeg' },
-  { label: 'WebP', value: 'image/webp' },
-  { label: 'AVIF', value: 'image/avif' },
-];
+export interface PhotoFilters {
+  keyword: string;
+  sourceRoot: string;
+  yearMonth: string;
+  location: string;
+}
