@@ -1,20 +1,30 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 本機相簿 MVP
 
-# Run and deploy your AI Studio app
+這是一個可在本機執行的相簿工具（目前為 MVP）。
 
-This contains everything you need to run your app locally.
+## 功能
+- 掃描硬碟中的指定目錄（可選根目錄或子目錄）
+- 依照片時間（年月）分類
+- 依來源資料夾分類
+- 關鍵字搜尋（檔名 / 路徑 / 地點欄位）
 
-View your app in AI Studio: https://ai.studio/apps/drive/1UkP9Gl6Dty8Jmp5A_lkRzCtyTwnOBMJF
+## 第一次使用（Windows / macOS）
 
-## Run Locally
+### 直接雙擊啟動
+- **Windows**：雙擊 `run-photo-album.bat`
+- **macOS**：雙擊 `run-photo-album.command`
 
-**Prerequisites:**  Node.js
+啟動器會自動：
+1. 執行 `npm install`
+2. 啟動開發伺服器 `npm run dev`
+3. 自動開啟 `http://localhost:5173`
 
+## 手動啟動
+```bash
+npm install
+npm run dev
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 打包說明
+目前此版本提供「雙擊啟動器」的本機桌面使用體驗。
+若你要真正 `.exe` / `.dmg` 單檔安裝包，我可以下一版幫你整合 Electron/Tauri 打包流程。

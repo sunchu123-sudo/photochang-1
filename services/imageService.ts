@@ -1,50 +1,27 @@
+import { PhotoItem } from '../types';
 
-import { ImageFormat } from '../types';
-
-export const convertImage = async (
-  file: File,
-  targetFormat: ImageFormat,
-  quality: number = 0.9
-): Promise<Blob> => {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      
-      if (!ctx) {
-        reject(new Error('Failed to get canvas context'));
-        return;
-      }
-
-      // Draw image
-      ctx.drawImage(img, 0, 0);
-
-      // Convert to blob
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            resolve(blob);
-          } else {
-            reject(new Error('Conversion failed'));
-          }
-        },
-        targetFormat,
-        quality
-      );
-    };
-    img.onerror = () => reject(new Error('Failed to load image'));
-    img.src = URL.createObjectURL(file);
-  });
+const toYearMonth = (date: Date): string => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  return `${y}-${m}`;
 };
 
-export const formatBytes = (bytes: number, decimals: number = 2) => {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+export const buildPhotoItem = async (file: File): Promise<PhotoItem> => {
+  const takenAt = new Date(file.lastModified);
+  const sourcePath = (file as File & { webkitRelativePath?: string }).webkitRelativePath || file.name;
+  const sourceRoot = sourcePath.includes('/') ? sourcePath.split('/')[0] : '單檔上傳';
+
+  return {
+    id: crypto.randomUUID(),
+    file,
+    name: file.name,
+    previewUrl: URL.createObjectURL(file),
+    sourcePath,
+    sourceRoot,
+    takenAt,
+    yearMonth: toYearMonth(takenAt),
+    locationLabel: '無 GPS 資訊（MVP）',
+  };
 };
+
+export const normalizeText = (text: string): string => text.trim().toLowerCase();
